@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { generateText } from "ai"
-import { groq } from "@ai-sdk/groq"
 import { neon } from "@neondatabase/serverless"
 
 const sql = neon(process.env.DATABASE_URL!)
@@ -31,7 +30,7 @@ Chapter Content: ${chapter.content}
 Provide only the summary, no additional text.`
 
       const { text } = await generateText({
-        model: groq("llama3-70b-8192"),
+        model: "groq/llama-3.1-70b-versatile",
         prompt,
         temperature: 0.3,
       })

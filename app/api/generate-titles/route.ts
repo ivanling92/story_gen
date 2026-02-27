@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { generateText } from "ai"
-import { groq } from "@ai-sdk/groq"
 
 const storyStructures = ["freytag", "hero_journey", "three_act", "dan_harmon", "fichtean", "save_cat", "seven_point"]
 
@@ -67,7 +66,7 @@ Format your response as a JSON array with this EXACT structure:
 CRITICAL: Each object must have exactly these three fields: "title", "summary", and "structure". Do not use any other field names like "styleType" or similar. Return only the JSON array, no additional text.`
 
     const { text } = await generateText({
-      model: groq("llama3-70b-8192"),
+      model: "groq/llama-3.1-70b-versatile",
       prompt,
       temperature: 0.9,
     })
