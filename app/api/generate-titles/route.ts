@@ -66,7 +66,7 @@ Format your response as a JSON array with this EXACT structure:
 CRITICAL: Each object must have exactly these three fields: "title", "summary", and "structure". Do not use any other field names like "styleType" or similar. Return only the JSON array, no additional text.`
 
     const { text } = await generateText({
-      model: "groq/llama-3.1-70b-versatile",
+      model: "openai/gpt-4o-mini",
       prompt,
       temperature: 0.9,
     })

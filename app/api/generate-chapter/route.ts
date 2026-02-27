@@ -120,7 +120,7 @@ Example format:
 Write engaging, immersive prose that draws the reader in and serves the story structure effectively.`
 
   const { text } = await generateText({
-    model: "groq/llama-3.1-70b-versatile",
+    model: "openai/gpt-4o-mini",
     prompt,
     temperature: 0.7,
   })

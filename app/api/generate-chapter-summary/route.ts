@@ -30,7 +30,7 @@ Chapter Content: ${chapter.content}
 Provide only the summary, no additional text.`
 
       const { text } = await generateText({
-        model: "groq/llama-3.1-70b-versatile",
+        model: "openai/gpt-4o-mini",
         prompt,
         temperature: 0.3,
       })
