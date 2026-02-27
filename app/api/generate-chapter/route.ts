@@ -31,6 +31,17 @@ export async function POST(request: NextRequest) {
 
     const structure = structureResult[0]
 
+    // Check if chapter already exists
+    const existingChapter = await sql`
+      SELECT * FROM chapters 
+      WHERE story_id = ${storyId} AND chapter_number = ${chapterNumber}
+    `
+
+    if (existingChapter.length > 0) {
+      // Chapter already exists, return it
+      return NextResponse.json({ chapter: existingChapter[0] })
+    }
+
     // Get previous chapters for context
     const previousChapters = await sql`
       SELECT chapter_number, title, summary, content
