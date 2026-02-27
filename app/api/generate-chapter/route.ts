@@ -56,14 +56,23 @@ export async function POST(request: NextRequest) {
     // Calculate word count
     const wordCount = chapterContent.content.split(/\s+/).length
 
-    // Insert chapter into database
+    // Insert chapter into database using ON CONFLICT to handle race conditions
     const insertResult = await sql`
       INSERT INTO chapters (story_id, chapter_number, title, content, summary, word_count, status)
       VALUES (${storyId}, ${chapterNumber}, ${chapterContent.title}, ${chapterContent.content}, ${chapterContent.summary}, ${wordCount}, 'generated')
+      ON CONFLICT (story_id, chapter_number) DO NOTHING
       RETURNING *
     `
 
-    const chapter = insertResult[0]
+    // If insert returned nothing due to conflict, fetch the existing chapter
+    let chapter = insertResult[0]
+    if (!chapter) {
+      const existingResult = await sql`
+        SELECT * FROM chapters 
+        WHERE story_id = ${storyId} AND chapter_number = ${chapterNumber}
+      `
+      chapter = existingResult[0]
+    }
 
     // Start background generation of next chapter if not the last chapter
     if (chapterNumber < story.total_chapters) {
